@@ -14,4 +14,5 @@
 * Run binary ```make run```
 * Do both ```make build_run```
 
-### [GNU Public License](./LICENSE.md "GPLv3")
+## License
+* [GNU Public License](./LICENSE.md "GPLv3")
