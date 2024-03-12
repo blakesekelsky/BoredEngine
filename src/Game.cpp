@@ -44,7 +44,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   map = new Map();
 
   // ecs implimentation
-  key.addComponent<PositionComponent>();
+  key.addComponent<PositionComponent>(500, 500);
   key.addComponent<SpriteComponent>("assets/key_sm.png");
 }
 

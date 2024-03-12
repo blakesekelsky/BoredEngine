@@ -22,10 +22,7 @@ class PositionComponent : public Component {
       ypos = y;
     }
 
-    void init() override {
-      xpos = 0;
-      ypos = 0;
-    }
+    void init() override {}
 
     void update() override {
       xpos++;
