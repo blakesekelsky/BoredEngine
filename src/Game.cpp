@@ -1,18 +1,12 @@
 #include "Game.h"
 #include "TextureManager.h"
+#include "GameObject.h"
 
-SDL_Texture *keyTex;
-int count;
-bool countUp;
-SDL_Rect srcR, destR;
+GameObject *key;
 
-Game::Game() {
-  printf("Game constructor\n");
-}
+Game::Game() {}
 
-Game::~Game() {
-  printf("Game destructor\n");
-}
+Game::~Game() {}
 
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
   int flags = 0;
@@ -43,8 +37,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   }
 
   // set key texture on surface
-  countUp = true;
-  keyTex = TextureManager::LoadTexture("assets/key.png", renderer);
+  key = new GameObject("assets/key.png", renderer, SDL_GetWindowSurface(window)->w-128, SDL_GetWindowSurface(window)->h-128, 128, 128);
 }
 
 void Game::handleEvents() {
@@ -60,11 +53,16 @@ void Game::handleEvents() {
   }
 }
 
+void Game::update() {
+  // update key game object, (pass window for collision)
+  key->Update(window);
+}
+
 void Game::render() {
   SDL_RenderClear(renderer);
   
-  // render key image
-  SDL_RenderCopy(renderer, keyTex, NULL, &destR);  
+  // render key game object
+  key->Render();
 
   SDL_RenderPresent(renderer);
 }
@@ -74,26 +72,4 @@ void Game::clean() {
   SDL_DestroyRenderer(renderer);
   SDL_Quit();
   printf("Game cleaned\n");
-}
-
-void Game::update() {
-  // bounce the key image back and forth horizontally
-  if (count + destR.w > SDL_GetWindowSurface(window)->w) {
-    countUp = false;
-  } else if (count <= 0) {
-    countUp = true;
-  }
-
-  if (countUp) {
-    count++;
-  } else {
-    count--;
-  }
-
-  destR.x = count;
-  destR.y = (SDL_GetWindowSurface(window)->h / 2) - 64;
-  destR.h = 128;
-  destR.w = 128;
-
-  printf("Count: %d\n", count);
 }
