@@ -65,10 +65,9 @@ void Game::update() {
   manager.refresh();
   manager.update();
 
-  if (key.getComponent<TransformComponent>().x() > 800) {
-    key.getComponent<TransformComponent>().setPos(-64, key.getComponent<TransformComponent>().y());
-  } else if (key.getComponent<TransformComponent>().y() > 640) {
-    key.getComponent<TransformComponent>().setPos(key.getComponent<TransformComponent>().x(), -64);
+  key.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
+  if (key.getComponent<TransformComponent>().position.x > 800) {
+    key.getComponent<TransformComponent>().position.Subtract(Vector2D(864, 0));
   }
 }
 
