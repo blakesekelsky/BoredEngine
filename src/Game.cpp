@@ -11,8 +11,13 @@ Map *map;
 auto &key(manager.addEntity());
 auto &wall(manager.addEntity());
 
+auto &tile(manager.addEntity());
+auto &tile2(manager.addEntity());
+
 SDL_Renderer *Game::renderer = nullptr;
 SDL_Event Game::event;
+
+std::vector<ColliderComponent *> Game::colliders;
 
 Game::Game() {}
 Game::~Game() {}
@@ -58,6 +63,13 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
   wall.addComponent<SpriteComponent>("assets/water.png");
   wall.addComponent<ColliderComponent>("wall");
+
+  // some tiles w/ colliders
+  tile.addComponent<TileComponent>(500, 500, 32, 32, 0);
+  tile.addComponent<ColliderComponent>("water");
+
+  tile2.addComponent<TileComponent>(532, 532, 32, 32, 1);
+  tile2.addComponent<ColliderComponent>("dirt");
 }
 
 void Game::handleEvents() {
@@ -77,16 +89,15 @@ void Game::update() {
   manager.refresh();
   manager.update();
 
-  if (Collision::AABB(key.getComponent<ColliderComponent>().collider, wall.getComponent<ColliderComponent>().collider)) {
-    key.getComponent<TransformComponent>().scale = 1;
-    printf("collision hit\n");
+  for (auto cc : colliders) {
+    Collision::AABB(key.getComponent<ColliderComponent>(), *cc);
   }
 }
 
 void Game::render() {
   SDL_RenderClear(renderer);
   
-  map->DrawMap();
+  // map->DrawMap();
   manager.draw();
 
   SDL_RenderPresent(renderer);
