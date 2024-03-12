@@ -62,7 +62,14 @@ void Game::handleEvents() {
 }
 
 void Game::update() {
+  manager.refresh();
   manager.update();
+
+  if (key.getComponent<PositionComponent>().x() > 800) {
+    key.getComponent<PositionComponent>().setPos(-64, key.getComponent<PositionComponent>().y());
+  } else if (key.getComponent<PositionComponent>().y() > 640) {
+    key.getComponent<PositionComponent>().setPos(key.getComponent<PositionComponent>().x(), -64);
+  }
 }
 
 void Game::render() {
