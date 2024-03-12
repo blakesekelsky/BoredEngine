@@ -78,8 +78,7 @@ void Game::update() {
   manager.update();
 
   if (Collision::AABB(key.getComponent<ColliderComponent>().collider, wall.getComponent<ColliderComponent>().collider)) {
-    key.getComponent<TransformComponent>().scale = 1;
-    printf("collision hit\n");
+    key.getComponent<TransformComponent>().velocity * -1;
   }
 }
 
