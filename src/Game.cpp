@@ -1,10 +1,10 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "GameObject.h"
+#include "Map.h"
 
 GameObject *key;
-GameObject *key2;
-GameObject *trick;
+Map *map;
 
 SDL_Renderer *Game::renderer = nullptr;
 
@@ -42,8 +42,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
   // set key texture on surface
   key = new GameObject("assets/key.png", 0, 0, 128, 128);
-  trick = new GameObject("assets/trick.png", (SDL_GetWindowSurface(window)->w-256)/2, (SDL_GetWindowSurface(window)->w-256)/2, 256, 256);
-  key2 = new GameObject("assets/key.png", SDL_GetWindowSurface(window)->w-128, SDL_GetWindowSurface(window)->h-128, 128, 128);
+  map = new Map();
 }
 
 void Game::handleEvents() {
@@ -62,17 +61,13 @@ void Game::handleEvents() {
 void Game::update() {
   // update key game object, (pass window for collision)
   key->Update(window);
-  trick->Update(window);
-  key2->Update(window);
 }
 
 void Game::render() {
   SDL_RenderClear(renderer);
   
-  // render key game object
+  map->DrawMap();
   key->Render();
-  trick->Render();
-  key2->Render();
 
   SDL_RenderPresent(renderer);
 }
