@@ -14,7 +14,7 @@ class SpriteComponent : public Component {
   
   public:
     SpriteComponent() = default;
-    
+
     ~SpriteComponent() {
       SDL_DestroyTexture(texture);
     }
@@ -33,10 +33,11 @@ class SpriteComponent : public Component {
       // uncomment when all sprites are uniform in size
       // srcRect.x = srcRect.y = 0;
       // srcRect.w = srcRect.h = 32;
-      destRect.w = destRect.h = 64;
     }
 
     void update() override {
+      destRect.w = transform->width * transform->scale;
+      destRect.h = transform->height * transform->scale;
       destRect.x = (int)transform->position.x;
       destRect.y = (int)transform->position.y;
     }
