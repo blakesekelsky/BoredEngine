@@ -16,6 +16,8 @@ class GameObject {
     int width;
     int height;
 
+    bool countUp = true;
+
     SDL_Texture *objTexture;
     // no srcRect because we're using the entire texture for now
     SDL_Rect destRect;

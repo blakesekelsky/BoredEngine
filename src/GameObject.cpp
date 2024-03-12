@@ -1,8 +1,6 @@
 #include "GameObject.h"
 #include "TextureManager.h"
 
-bool countUp = true;
-
 GameObject::GameObject(const char *texturesheet, SDL_Renderer *ren, int x, int y, int w, int h) {
   xpos = x;
   ypos = y;
