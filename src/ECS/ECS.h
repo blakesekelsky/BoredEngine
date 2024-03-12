@@ -43,10 +43,12 @@ class Entity {
   public:
     void Update() {
       for (auto &c : components) c->update();
-      for (auto &c : components) c->draw();
     }
 
-    void Draw() {}
+    void Draw() {
+      for (auto &c : components) c->draw();
+    }
+    
     bool isActive() const { return active; }
     void destroy() { active = false; }
 
@@ -82,15 +84,15 @@ class Entity {
 
 class Manager {
   public:
-    void Update() {
+    void update() {
       for (auto &e : entities) e->Update();
     }
 
-    void Draw() {
+    void draw() {
       for (auto &e : entities) e->Draw();
     }
 
-    void Refresh() {
+    void refresh() {
       entities.erase(std::remove_if(std::begin(entities), std::end(entities), [](const std::unique_ptr<Entity> &mEntity) {
         return !mEntity->isActive();
       }), std::end(entities));

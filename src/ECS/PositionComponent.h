@@ -1,10 +1,19 @@
-#ifndef COMPONENTS_H
-#define COMPONENTS_H
+#ifndef POSITIONCOMPONENT_H
+#define POSITIONCOMPONENT_H
 
-#include "ECS.h"
+#include "Components.h"
 
 class PositionComponent : public Component {
   public:
+    PositionComponent() {
+      xpos = ypos = 0;
+    }
+    
+    PositionComponent(int x, int y){
+      xpos = x;
+      ypos = y;
+    };
+
     int x() {return xpos;}
     int y() {return ypos;}
 
@@ -24,8 +33,9 @@ class PositionComponent : public Component {
     }
 
   private:
-    int xpos = 0; 
-    int ypos = 0;
+    int xpos; 
+    int ypos;
 };
+
 
 #endif

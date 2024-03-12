@@ -1,20 +1,15 @@
 #include "Game.h"
 #include "TextureManager.h"
-#include "GameObject.h"
 #include "Map.h"
-#include "ECS.h"
-#include "Components.h"
+#include "ECS/Components.h"
 
-GameObject *key;
+Manager manager;
 Map *map;
 
 SDL_Renderer *Game::renderer = nullptr;
-
-Manager manager;
-auto &newPlayer(manager.addEntity());
+auto &key(manager.addEntity());
 
 Game::Game() {}
-
 Game::~Game() {}
 
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
@@ -46,11 +41,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   }
 
   // set key texture on surface
-  key = new GameObject("assets/key.png", 0, 0, 128, 128);
   map = new Map();
 
-  newPlayer.addComponent<PositionComponent>();
-  newPlayer.getComponent<PositionComponent>().setPos(600, 100);
+  // ecs implimentation
+  key.addComponent<PositionComponent>();
+  key.addComponent<SpriteComponent>("assets/key_sm.png");
 }
 
 void Game::handleEvents() {
@@ -67,17 +62,14 @@ void Game::handleEvents() {
 }
 
 void Game::update() {
-  // update key game object, (pass window for collision)
-  key->Update(window);
-  manager.Update();
-  printf("position %d %d\n", newPlayer.getComponent<PositionComponent>().x(), newPlayer.getComponent<PositionComponent>().y());
+  manager.update();
 }
 
 void Game::render() {
   SDL_RenderClear(renderer);
   
   map->DrawMap();
-  key->Render();
+  manager.draw();
 
   SDL_RenderPresent(renderer);
 }
