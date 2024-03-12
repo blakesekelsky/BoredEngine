@@ -6,6 +6,8 @@ GameObject *key;
 GameObject *key2;
 GameObject *trick;
 
+SDL_Renderer *Game::renderer = nullptr;
+
 Game::Game() {}
 
 Game::~Game() {}
@@ -39,9 +41,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   }
 
   // set key texture on surface
-  key = new GameObject("assets/key.png", renderer, 0, 0, 128, 128);
-  trick = new GameObject("assets/trick.png", renderer, (SDL_GetWindowSurface(window)->w-128)/2, (SDL_GetWindowSurface(window)->w-128)/2, 128, 128);
-  key2 = new GameObject("assets/key.png", renderer, SDL_GetWindowSurface(window)->w-128, SDL_GetWindowSurface(window)->h-128, 128, 128);
+  key = new GameObject("assets/key.png", 0, 0, 128, 128);
+  trick = new GameObject("assets/trick.png", (SDL_GetWindowSurface(window)->w-256)/2, (SDL_GetWindowSurface(window)->w-256)/2, 256, 256);
+  key2 = new GameObject("assets/key.png", SDL_GetWindowSurface(window)->w-128, SDL_GetWindowSurface(window)->h-128, 128, 128);
 }
 
 void Game::handleEvents() {

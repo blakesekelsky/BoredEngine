@@ -17,11 +17,12 @@ class Game {
     void render();
     void clean();
 
+    static SDL_Renderer *renderer;
+
     bool running() { return isRunning; }
   private:
     bool isRunning;
     SDL_Window* window;
-    SDL_Renderer* renderer;
 };
 
 #endif
