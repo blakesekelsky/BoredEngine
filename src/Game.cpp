@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "TextureManager.h"
 
 SDL_Texture *keyTex;
 SDL_Rect srcR, destR;
@@ -40,9 +41,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   }
 
   // set key texture on surface
-  SDL_Surface *tmpSurface = IMG_Load("assets/key.png");
-  keyTex = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-  SDL_FreeSurface(tmpSurface);
+  keyTex = TextureManager::LoadTexture("assets/key.png", renderer);
 }
 
 void Game::handleEvents() {
