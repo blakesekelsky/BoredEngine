@@ -2,6 +2,8 @@
 #include "TextureManager.h"
 
 SDL_Texture *keyTex;
+int count;
+bool countUp;
 SDL_Rect srcR, destR;
 
 Game::Game() {
@@ -41,6 +43,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   }
 
   // set key texture on surface
+  countUp = true;
   keyTex = TextureManager::LoadTexture("assets/key.png", renderer);
 }
 
@@ -74,12 +77,23 @@ void Game::clean() {
 }
 
 void Game::update() {
-  // set key image on screen
-  destR.x = (SDL_GetWindowSurface(window)->w / 2) - 64;
+  // bounce the key image back and forth horizontally
+  if (count + destR.w > SDL_GetWindowSurface(window)->w) {
+    countUp = false;
+  } else if (count <= 0) {
+    countUp = true;
+  }
+
+  if (countUp) {
+    count++;
+  } else {
+    count--;
+  }
+
+  destR.x = count;
   destR.y = (SDL_GetWindowSurface(window)->h / 2) - 64;
   destR.h = 128;
   destR.w = 128;
 
-  count++;
   printf("Count: %d\n", count);
 }
