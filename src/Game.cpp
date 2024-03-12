@@ -6,8 +6,11 @@
 Manager manager;
 Map *map;
 
-SDL_Renderer *Game::renderer = nullptr;
+// key entity
 auto &key(manager.addEntity());
+
+SDL_Renderer *Game::renderer = nullptr;
+SDL_Event Game::event;
 
 Game::Game() {}
 Game::~Game() {}
@@ -46,10 +49,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   // ecs implimentation
   key.addComponent<TransformComponent>(500, 500);
   key.addComponent<SpriteComponent>("assets/key.png");
+  key.addComponent<KeyboardController>();
 }
 
 void Game::handleEvents() {
-  SDL_Event event;
+  
   SDL_PollEvent(&event);
 
   switch(event.type) {
@@ -64,11 +68,6 @@ void Game::handleEvents() {
 void Game::update() {
   manager.refresh();
   manager.update();
-
-  key.getComponent<TransformComponent>().position.Add(Vector2D(5, 0));
-  if (key.getComponent<TransformComponent>().position.x > 800) {
-    key.getComponent<TransformComponent>().position.Subtract(Vector2D(864, 0));
-  }
 }
 
 void Game::render() {
