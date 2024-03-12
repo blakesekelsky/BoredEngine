@@ -16,8 +16,7 @@ class TransformComponent : public Component {
     int speed = 5;
 
     TransformComponent() {
-      position.x = 0.0f;
-      position.y = 0.0f;
+      position.Zero();
     }
     
     TransformComponent(float x, float y){
@@ -26,8 +25,7 @@ class TransformComponent : public Component {
     }
 
     TransformComponent(int sc) {
-      position.x = 0.0f;
-      position.y = 0.0f;
+      position.Zero();
       scale = sc;
     }
 
@@ -40,8 +38,7 @@ class TransformComponent : public Component {
     }
 
     void init() override {
-      velocity.x = 0.0f;
-      velocity.y = 0.0f;
+      velocity.Zero();
     }
 
     void update() override {
