@@ -44,7 +44,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   map = new Map();
 
   // ecs implimentation
-  key.addComponent<PositionComponent>(500, 500);
+  key.addComponent<TransformComponent>(500, 500);
   key.addComponent<SpriteComponent>("assets/key.png");
 }
 
@@ -65,10 +65,10 @@ void Game::update() {
   manager.refresh();
   manager.update();
 
-  if (key.getComponent<PositionComponent>().x() > 800) {
-    key.getComponent<PositionComponent>().setPos(-64, key.getComponent<PositionComponent>().y());
-  } else if (key.getComponent<PositionComponent>().y() > 640) {
-    key.getComponent<PositionComponent>().setPos(key.getComponent<PositionComponent>().x(), -64);
+  if (key.getComponent<TransformComponent>().x() > 800) {
+    key.getComponent<TransformComponent>().setPos(-64, key.getComponent<TransformComponent>().y());
+  } else if (key.getComponent<TransformComponent>().y() > 640) {
+    key.getComponent<TransformComponent>().setPos(key.getComponent<TransformComponent>().x(), -64);
   }
 }
 

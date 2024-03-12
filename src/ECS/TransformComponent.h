@@ -3,13 +3,13 @@
 
 #include "Components.h"
 
-class PositionComponent : public Component {
+class TransformComponent : public Component {
   public:
-    PositionComponent() {
+    TransformComponent() {
       xpos = ypos = 0;
     }
     
-    PositionComponent(int x, int y){
+    TransformComponent(int x, int y){
       xpos = x;
       ypos = y;
     };
