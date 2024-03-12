@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
   int frameTime;
 
   game = new Game();
-  game->init("TrapEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, false);
+  game->init("TrapEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 640, false);
 
   while (game->running()) {
     frameStart = SDL_GetTicks();
