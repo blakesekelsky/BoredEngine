@@ -81,4 +81,6 @@ void Game::update() {
   destR.h = 128;
   destR.w = 128;
 
+  count++;
+  printf("Count: %d\n", count);
 }
