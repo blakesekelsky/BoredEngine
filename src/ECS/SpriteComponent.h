@@ -14,6 +14,11 @@ class SpriteComponent : public Component {
   
   public:
     SpriteComponent() = default;
+    
+    ~SpriteComponent() {
+      SDL_DestroyTexture(texture);
+    }
+
     SpriteComponent(const char *path) {
       setTex(path);
     }
