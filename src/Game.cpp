@@ -9,10 +9,6 @@ Map *map;
 
 // key entity
 auto &key(manager.addEntity());
-auto &wall(manager.addEntity());
-
-auto &tile(manager.addEntity());
-auto &tile2(manager.addEntity());
 
 SDL_Renderer *Game::renderer = nullptr;
 SDL_Event Game::event;
@@ -52,24 +48,13 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
   // set key texture on surface
   map = new Map();
+  map->LoadMap("assets/16x16.map", 16, 16);
 
-  // ecs implimentation
+  // key components
   key.addComponent<TransformComponent>(2);
   key.addComponent<SpriteComponent>("assets/key.png");
   key.addComponent<KeyboardController>();
   key.addComponent<ColliderComponent>("key");
-
-  // wall for collision
-  wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
-  wall.addComponent<SpriteComponent>("assets/water.png");
-  wall.addComponent<ColliderComponent>("wall");
-
-  // some tiles w/ colliders
-  tile.addComponent<TileComponent>(500, 500, 32, 32, 0);
-  tile.addComponent<ColliderComponent>("water");
-
-  tile2.addComponent<TileComponent>(532, 532, 32, 32, 1);
-  tile2.addComponent<ColliderComponent>("dirt");
 }
 
 void Game::handleEvents() {
@@ -108,4 +93,10 @@ void Game::clean() {
   SDL_DestroyRenderer(renderer);
   SDL_Quit();
   printf("Game cleaned\n");
+}
+
+void Game::AddTile(int id, int x, int y) {
+  auto &tile(manager.addEntity());
+  tile.addComponent<TileComponent>(x, y, 32, 32, id);
+  tile.addComponent<ColliderComponent>("terrain");
 }
