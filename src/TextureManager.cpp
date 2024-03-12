@@ -8,6 +8,11 @@ SDL_Texture *TextureManager::LoadTexture(const char *fileName) {
   return tex;
 }
 
-void TextureManager::Draw(SDL_Texture *tex, SDL_Rect src, SDL_Rect dest) {
-  SDL_RenderCopy(Game::renderer, tex, &src, &dest);
+// uncomment when all sprites are uniform in size
+// void TextureManager::Draw(SDL_Texture *tex, SDL_Rect src, SDL_Rect dest) {
+//   SDL_RenderCopy(Game::renderer, tex, &src, &dest);
+// }
+
+void TextureManager::Draw(SDL_Texture *tex, SDL_Rect dest) {
+  SDL_RenderCopy(Game::renderer, tex, NULL, &dest);
 }

@@ -60,13 +60,16 @@ void Map::DrawMap() {
 
       switch (type) {
         case 0:
-          TextureManager::Draw(water, src, dest);
+          // TextureManager::Draw(water, src, dest); --- uncomment when all sprites are uniform in size
+          TextureManager::Draw(water, dest);
           break;
         case 1:
-          TextureManager::Draw(grass, src, dest);
+          // TextureManager::Draw(grass, src, dest); --- uncomment when all sprites are uniform in size
+          TextureManager::Draw(grass, dest);
           break;
         case 2:
-          TextureManager::Draw(dirt, src, dest);
+          // TextureManager::Draw(dirt, src, dest); --- uncomment when all sprites are uniform in size
+          TextureManager::Draw(dirt, dest);
           break;
         default:
           break;

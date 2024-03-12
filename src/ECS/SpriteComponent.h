@@ -9,7 +9,8 @@ class SpriteComponent : public Component {
   private:
     PositionComponent *position;
     SDL_Texture *texture;
-    SDL_Rect srcRect, destRect;
+    // SDL_Rect srcRect; --- uncomment when all sprites are uniform in size
+    SDL_Rect destRect;
   
   public:
     SpriteComponent() = default;
@@ -24,8 +25,9 @@ class SpriteComponent : public Component {
     void init() override {
       position = &entity->getComponent<PositionComponent>();
 
-      srcRect.x = srcRect.y = 0;
-      srcRect.w = srcRect.h = 32;
+      // uncomment when all sprites are uniform in size
+      // srcRect.x = srcRect.y = 0;
+      // srcRect.w = srcRect.h = 32;
       destRect.w = destRect.h = 64;
     }
 
@@ -35,7 +37,7 @@ class SpriteComponent : public Component {
     }
 
     void draw() override {
-      TextureManager::Draw(texture, srcRect, destRect);
+      TextureManager::Draw(texture, destRect);
     }
 };
 
