@@ -89,8 +89,8 @@ void Game::update() {
   manager.refresh();
   manager.update();
 
-  if (Collision::AABB(key.getComponent<ColliderComponent>().collider, wall.getComponent<ColliderComponent>().collider)) {
-    key.getComponent<TransformComponent>().velocity * -1;
+  for (auto cc : colliders) {
+    Collision::AABB(key.getComponent<ColliderComponent>(), *cc);
   }
 }
 
