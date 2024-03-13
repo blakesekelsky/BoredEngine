@@ -1,4 +1,4 @@
-# TrapEngine
+# BoredEngine
 **A 2D game engine intended for boardgames.**
 
 ## Dependencies
