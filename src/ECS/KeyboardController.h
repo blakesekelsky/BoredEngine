@@ -36,6 +36,9 @@ class KeyboardController : public Component {
             sprite->spriteFlip = SDL_FLIP_NONE;
             sprite->play("Walk");
             break;
+          case SDLK_ESCAPE:
+            Game::isRunning = false;
+            break;
           default:
             break;
         }

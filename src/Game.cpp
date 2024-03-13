@@ -11,6 +11,7 @@ Manager manager;
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
+bool Game::isRunning = false;
 
 std::vector<ColliderComponent*> Game::colliders;
 

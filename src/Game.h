@@ -24,10 +24,10 @@ class Game {
     static SDL_Renderer *renderer;
     static SDL_Event event;
     static std::vector<ColliderComponent *> colliders;
+    static bool isRunning;
 
     bool running() { return isRunning; }
   private:
-    bool isRunning;
     SDL_Window *window;
 };
 
