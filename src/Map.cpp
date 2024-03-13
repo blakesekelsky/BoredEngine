@@ -33,7 +33,7 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY) {
           int tileCode = mapdata[y][x];
           int srcX = tileCode % 10;
           int srcY = tileCode / 10;
-          Game::AddTile(srcX * 32, srcY * 32, x * 32, y * 32);
+          Game::AddTile(srcX * 32, srcY * 32, x * 64, y * 64); // 2x tile scale
       }
   }
 }
