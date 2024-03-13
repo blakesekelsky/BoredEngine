@@ -13,6 +13,8 @@ SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 bool Game::isRunning = false;
 
+SDL_Rect Game::camera = {0, 0, 800, 640};
+
 std::vector<ColliderComponent*> Game::colliders;
 
 auto& player(manager.addEntity());
@@ -59,7 +61,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   Map::LoadMap("assets/map.map", 25, 20);
 
   // player components
-  player.addComponent<TransformComponent>(2, true, Game::window);
+  player.addComponent<TransformComponent>(2, false, Game::window);
   player.addComponent<SpriteComponent>("assets/player_anim.png", true);
   player.addComponent<KeyboardController>();
   player.addComponent<ColliderComponent>("player");
@@ -86,17 +88,22 @@ void Game::update() {
   manager.refresh();
   manager.update();
 
-  Vector2D pVel = player.getComponent<TransformComponent>().velocity;
-  int pSpeed = player.getComponent<TransformComponent>().speed;
+  camera.x = player.getComponent<TransformComponent>().position.x - 400;
+  camera.y = player.getComponent<TransformComponent>().position.y - 320;
 
-  for (auto t : tiles) {
-    t->getComponent<TileComponent>().destRect.x += -(pVel.x * pSpeed);
-    t->getComponent<TileComponent>().destRect.y += -(pVel.y * pSpeed);
+  if (camera.x < 0) {
+    camera.x = 0;
+  }
+  if (camera.x > camera.w) {
+    camera.x = camera.w;
+  } 
+  if (camera.y < 0) {
+    camera.y = 0;
+  }
+  if (camera.y > camera.h) {
+    camera.y = camera.h;
   }
 
-  for (auto cc : colliders) {
-    Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
-  }
 }
 
 void Game::render() {
