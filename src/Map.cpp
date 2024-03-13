@@ -12,11 +12,11 @@ Map::~Map() {
 }
 
 void Map::LoadMap(std::string path, int sizeX, int sizeY) {
-  std::ifstream mapFile(path);
+  std::ifstream mapfile(path);
   std::string line;
-  std::vector<std::vector<int>> mapData;
+  std::vector<std::vector<int>> mapdata;
 
-  while (std::getline(mapFile, line)) {
+  while (std::getline(mapfile, line)) {
       std::istringstream ss(line);
       std::vector<int> row;
       std::string value;
@@ -25,12 +25,12 @@ void Map::LoadMap(std::string path, int sizeX, int sizeY) {
           row.push_back(std::stoi(value));
       }
 
-      mapData.push_back(row);
+      mapdata.push_back(row);
   }
 
   for (int y = 0; y < sizeY; ++y) {
       for (int x = 0; x < sizeX; ++x) {
-          int tileCode = mapData[y][x];
+          int tileCode = mapdata[y][x];
           int srcX = tileCode % 10;
           int srcY = tileCode / 10;
           Game::AddTile(srcX * 32, srcY * 32, x * 32, y * 32);
