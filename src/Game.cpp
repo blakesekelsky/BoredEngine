@@ -63,7 +63,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   player.addComponent<SpriteComponent>("assets/player_anim.png", true);
   player.addComponent<KeyboardController>();
   player.addComponent<ColliderComponent>("player");
-  player.addGroup(groupPlayers);  
+  player.addGroup(groupPlayers);
 }
 
 void Game::handleEvents() {
