@@ -4,23 +4,24 @@
 #include "ECS/Components.h"
 #include "Collision.h"
 
+Map* map;
 Manager manager;
-Map *map;
 
-// entities
-auto &player(manager.addEntity());
-auto &wall(manager.addEntity());
-
-SDL_Renderer *Game::renderer = nullptr;
+SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 
-std::vector<ColliderComponent *> Game::colliders;
+std::vector<ColliderComponent*> Game::colliders;
 
-enum GroupLabels : std::size_t {
-  groupMap,
-  groupPlayers,
-  groupEnemies,
-  groupColliders
+auto& player(manager.addEntity());
+
+const char* mapfile = "assets/terrain_ss.png";
+
+enum groupLabels : std::size_t
+{
+	groupMap,
+	groupPlayers,
+	groupEnemies,
+	groupColliders
 };
 
 Game::Game() {}
@@ -55,21 +56,14 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   }
 
   // set key texture on surface
-  map = new Map();
-  map->LoadMap("assets/16x16.map", 16, 16);
+  Map::LoadMap("assets/map.map", 25, 20);
 
   // player components
   player.addComponent<TransformComponent>(2);
-  player.addComponent<SpriteComponent>("assets/spritesheet.png", 4, 150);
+  player.addComponent<SpriteComponent>("assets/player_anim.png", true);
   player.addComponent<KeyboardController>();
   player.addComponent<ColliderComponent>("player");
-  player.addGroup(groupPlayers);
-
-  wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
-  wall.addComponent<SpriteComponent>("assets/dirt.png");
-  wall.addComponent<ColliderComponent>("wall");
-  wall.addGroup(groupMap);
-  
+  player.addGroup(groupPlayers);  
 }
 
 void Game::handleEvents() {
@@ -124,9 +118,8 @@ void Game::clean() {
   printf("Game cleaned\n");
 }
 
-void Game::AddTile(int id, int x, int y) {
+void Game::AddTile(int srcX, int srcY, int xpos, int ypos) {
   auto &tile(manager.addEntity());
-  tile.addComponent<TileComponent>(x, y, 32, 32, id);
-  tile.addComponent<ColliderComponent>("terrain");
+  tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, mapfile);
   tile.addGroup(groupMap);
 }
