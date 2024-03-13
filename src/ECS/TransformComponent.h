@@ -12,11 +12,20 @@ class TransformComponent : public Component {
     int height = 32;
     int width = 32;
     int scale = 1;
+    bool centered = false;
 
     int speed = 5;
 
     TransformComponent() {
       position.Zero();
+    }
+
+    // background moving around player
+    TransformComponent(int sc, bool forceC, SDL_Window *window) {
+      scale = sc;
+      centered = forceC;
+      position.x = (SDL_GetWindowSurface(window)->w / 2) - ((width * scale) / 2);
+      position.y = (SDL_GetWindowSurface(window)->h / 2) - ((height * scale) / 2);
     }
     
     TransformComponent(float x, float y){
@@ -42,8 +51,10 @@ class TransformComponent : public Component {
     }
 
     void update() override {
-      position.x += velocity.x * speed;
-      position.y += velocity.y * speed;
+      if (!centered) {
+        position.x += velocity.x * speed;
+        position.y += velocity.y * speed;
+      }
     }
 };
 

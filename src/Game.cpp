@@ -5,6 +5,8 @@
 #include "Collision.h"
 
 Map* map;
+const char* mapfile = "assets/terrain_ss.png";
+
 Manager manager;
 
 SDL_Renderer* Game::renderer = nullptr;
@@ -14,13 +16,10 @@ std::vector<ColliderComponent*> Game::colliders;
 
 auto& player(manager.addEntity());
 
-const char* mapfile = "assets/terrain_ss.png";
-
 enum groupLabels : std::size_t
 {
 	groupMap,
 	groupPlayers,
-	groupEnemies,
 	groupColliders
 };
 
@@ -59,7 +58,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   Map::LoadMap("assets/map.map", 25, 20);
 
   // player components
-  player.addComponent<TransformComponent>(2);
+  player.addComponent<TransformComponent>(2, true, Game::window);
   player.addComponent<SpriteComponent>("assets/player_anim.png", true);
   player.addComponent<KeyboardController>();
   player.addComponent<ColliderComponent>("player");
@@ -79,18 +78,25 @@ void Game::handleEvents() {
   }
 }
 
+auto &tiles(manager.getGroup(groupMap));
+auto &players(manager.getGroup(groupPlayers));
+
 void Game::update() {
   manager.refresh();
   manager.update();
+
+  Vector2D pVel = player.getComponent<TransformComponent>().velocity;
+  int pSpeed = player.getComponent<TransformComponent>().speed;
+
+  for (auto t : tiles) {
+    t->getComponent<TileComponent>().destRect.x += -(pVel.x * pSpeed);
+    t->getComponent<TileComponent>().destRect.y += -(pVel.y * pSpeed);
+  }
 
   for (auto cc : colliders) {
     Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
   }
 }
-
-auto &tiles(manager.getGroup(groupMap));
-auto &players(manager.getGroup(groupPlayers));
-auto &enemies(manager.getGroup(groupEnemies));
 
 void Game::render() {
   SDL_RenderClear(renderer);
@@ -102,10 +108,6 @@ void Game::render() {
 
   for (auto &p : players) {
     p->Draw();
-  }
-
-  for (auto &e : enemies) {
-    e->Draw();
   }
 
   SDL_RenderPresent(renderer);
