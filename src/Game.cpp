@@ -4,10 +4,8 @@
 #include "ECS/Components.h"
 #include "Collision.h"
 
-Map* map;
-const char* mapfile = "assets/terrain_ss.png";
-
 Manager manager;
+Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
@@ -15,16 +13,7 @@ bool Game::isRunning = false;
 
 SDL_Rect Game::camera = {0, 0, 800, 640};
 
-std::vector<ColliderComponent*> Game::colliders;
-
 auto& player(manager.addEntity());
-
-enum groupLabels : std::size_t
-{
-	groupMap,
-	groupPlayers,
-	groupColliders
-};
 
 Game::Game() {}
 Game::~Game() {}
@@ -58,7 +47,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   }
 
   // set key texture on surface
-  Map::LoadMap("assets/map.map", 25, 20);
+  map = new Map("assets/terrain_ss.png", 2, 32);
+  map->LoadMapTiles("assets/tiles.map", 25, 20);
+  map->LoadMapCollisionTiles("assets/collision.map", 25, 20);
 
   // player components
   player.addComponent<TransformComponent>(2, false, Game::window);
@@ -69,7 +60,6 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 }
 
 void Game::handleEvents() {
-  
   SDL_PollEvent(&event);
 
   switch(event.type) {
@@ -81,12 +71,23 @@ void Game::handleEvents() {
   }
 }
 
-auto &tiles(manager.getGroup(groupMap));
-auto &players(manager.getGroup(groupPlayers));
+auto &tiles(manager.getGroup(Game::groupMap));
+auto &players(manager.getGroup(Game::groupPlayers));
+auto &colliders(manager.getGroup(Game::groupColliders));
 
 void Game::update() {
+  SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
+  Vector2D playerPos = player.getComponent<TransformComponent>().position;
+
   manager.refresh();
   manager.update();
+
+  for (auto &c : colliders) {
+    SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
+    if (Collision::AABB(playerCol, cCol)) {
+      player.getComponent<TransformComponent>().position = playerPos;
+    }
+  }
 
   camera.x = player.getComponent<TransformComponent>().position.x - 400;
   camera.y = player.getComponent<TransformComponent>().position.y - 320;
@@ -109,9 +110,12 @@ void Game::update() {
 void Game::render() {
   SDL_RenderClear(renderer);
   
-  // render each groupTile layer
   for (auto &t : tiles) {
     t->Draw();
+  }
+
+  for (auto &c : colliders) {
+    c->Draw();
   }
 
   for (auto &p : players) {
@@ -126,10 +130,4 @@ void Game::clean() {
   SDL_DestroyRenderer(renderer);
   SDL_Quit();
   printf("Game cleaned\n");
-}
-
-void Game::AddTile(int srcX, int srcY, int xpos, int ypos) {
-  auto &tile(manager.addEntity());
-  tile.addComponent<TileComponent>(srcX, srcY, xpos, ypos, mapfile);
-  tile.addGroup(groupMap);
 }
