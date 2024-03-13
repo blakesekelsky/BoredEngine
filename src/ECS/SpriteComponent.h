@@ -9,8 +9,12 @@ class SpriteComponent : public Component {
   private:
     TransformComponent *transform;
     SDL_Texture *texture;
-    // SDL_Rect srcRect; --- uncomment when all sprites are uniform in size
+    SDL_Rect srcRect;
     SDL_Rect destRect;
+
+    bool animated = false;
+    int frames = 0;
+    int speed = 100; // milliseconds
   
   public:
     SpriteComponent() = default;
@@ -23,6 +27,13 @@ class SpriteComponent : public Component {
       setTex(path);
     }
 
+    SpriteComponent(const char *path, int nFrames, int mSpeed) {
+        animated = true;
+        frames = nFrames;
+        speed = mSpeed;
+        setTex(path);
+    }
+
     void setTex(const char *path) {
       texture = TextureManager::LoadTexture(path);
     }
@@ -30,12 +41,16 @@ class SpriteComponent : public Component {
     void init() override {
       transform = &entity->getComponent<TransformComponent>();
 
-      // uncomment when all sprites are uniform in size
-      // srcRect.x = srcRect.y = 0;
-      // srcRect.w = srcRect.h = 32;
+      srcRect.x = srcRect.y = 0;
+      srcRect.w = transform->width;
+      srcRect.h = transform->height;
     }
 
     void update() override {
+      if (animated) {
+        srcRect.x = srcRect.w * static_cast<int>((SDL_GetTicks() / speed) % frames);
+      }
+
       destRect.w = transform->width * transform->scale;
       destRect.h = transform->height * transform->scale;
       destRect.x = (int)transform->position.x;
@@ -43,7 +58,7 @@ class SpriteComponent : public Component {
     }
 
     void draw() override {
-      TextureManager::Draw(texture, destRect);
+      TextureManager::Draw(texture, srcRect, destRect);
     }
 };
 

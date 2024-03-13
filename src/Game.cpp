@@ -8,7 +8,7 @@ Manager manager;
 Map *map;
 
 // entities
-auto &key(manager.addEntity());
+auto &player(manager.addEntity());
 auto &wall(manager.addEntity());
 
 SDL_Renderer *Game::renderer = nullptr;
@@ -58,12 +58,12 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   map = new Map();
   map->LoadMap("assets/16x16.map", 16, 16);
 
-  // key components
-  key.addComponent<TransformComponent>(2);
-  key.addComponent<SpriteComponent>("assets/key.png");
-  key.addComponent<KeyboardController>();
-  key.addComponent<ColliderComponent>("key");
-  key.addGroup(groupPlayers);
+  // player components
+  player.addComponent<TransformComponent>(2);
+  player.addComponent<SpriteComponent>("assets/spritesheet.png", 4, 150);
+  player.addComponent<KeyboardController>();
+  player.addComponent<ColliderComponent>("player");
+  player.addGroup(groupPlayers);
 
   wall.addComponent<TransformComponent>(300.0f, 300.0f, 300, 20, 1);
   wall.addComponent<SpriteComponent>("assets/dirt.png");
@@ -90,7 +90,7 @@ void Game::update() {
   manager.update();
 
   for (auto cc : colliders) {
-    Collision::AABB(key.getComponent<ColliderComponent>(), *cc);
+    Collision::AABB(player.getComponent<ColliderComponent>(), *cc);
   }
 }
 
