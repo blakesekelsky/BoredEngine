@@ -1,5 +1,5 @@
 # TrapEngine
-**Making a 2d boardgame engine for Risk except you're a crime syndicate instead of a country.**
+**A 2D game engine intended for boardgames.**
 
 ## Dependencies
 * **g++**
