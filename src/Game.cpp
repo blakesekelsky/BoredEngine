@@ -3,6 +3,7 @@
 #include "Map.h"
 #include "ECS/Components.h"
 #include "Collision.h"
+#include "AssetManager.h"
 
 Manager manager;
 Map* map;
@@ -10,6 +11,7 @@ Map* map;
 SDL_Renderer* Game::renderer = nullptr;
 SDL_Event Game::event;
 bool Game::isRunning = false;
+AssetManager *Game::assets = new AssetManager(&manager);
 
 SDL_Rect Game::camera = {0, 0, 800, 640};
 
@@ -46,16 +48,19 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     printf("SDL init failed\n");
   }
 
-  // set key texture on surface
-  map = new Map("assets/terrain_ss.png", 2, 32);
+  assets->AddTexture("terrain", "assets/terrain_ss.png");
+  assets->AddTexture("player", "assets/player_anim.png");
+  assets->AddTexture("collision", "assets/col_box.png");
+
+  map = new Map("terrain", 2, 32);
   map->LoadMapTiles("assets/tiles.map", 25, 20);
   map->LoadMapCollisionTiles("assets/collision.map", 25, 20);
 
   // player components
   player.addComponent<TransformComponent>(2, false, Game::window);
-  player.addComponent<SpriteComponent>("assets/player_anim.png", true);
+  player.addComponent<SpriteComponent>("player", true);
   player.addComponent<KeyboardController>();
-  player.addComponent<ColliderComponent>("player");
+  player.addComponent<ColliderComponent>("player", player.getComponent<TransformComponent>().position.x, player.getComponent<TransformComponent>().position.y, 64);
   player.addGroup(groupPlayers);
 }
 

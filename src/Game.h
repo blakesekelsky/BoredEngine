@@ -5,8 +5,10 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 #include <vector>
+#include "AssetManager.h"
 
 class ColliderComponent;
+class AssetManager;
 
 class Game {
   public:
@@ -24,6 +26,7 @@ class Game {
     static SDL_Event event;
     static bool isRunning;
     static SDL_Rect camera;
+    static AssetManager *assets;
 
     bool running() { return isRunning; }
 

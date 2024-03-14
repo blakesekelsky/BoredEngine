@@ -6,7 +6,7 @@
 
 class Map {
   public:
-    Map(const char *mfp, int ms, int ts);
+    Map(std::string tId, int ms, int ts);
     ~Map();
 
 
@@ -14,7 +14,7 @@ class Map {
     void LoadMapTiles(std::string path, int sizeX, int sizeY);
     void LoadMapCollisionTiles(std::string path, int sizeX, int sizeY);
   private:
-    const char *mapfilePath;
+    std::string texId;
     int tileSize;
     int mapScale;
     int scaledSize;

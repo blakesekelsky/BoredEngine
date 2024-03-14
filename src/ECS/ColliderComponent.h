@@ -16,10 +16,6 @@ class ColliderComponent : public Component {
 
     TransformComponent *transform;
 
-    ColliderComponent(std::string t) {
-      tag = t;
-    }
-
     ColliderComponent(std::string t, int xpos, int ypos, int size) {
       tag = t;
       collider.x = xpos;
@@ -33,7 +29,7 @@ class ColliderComponent : public Component {
       }
       transform = &entity->getComponent<TransformComponent>();
 
-      tex = TextureManager::LoadTexture("assets/collision_tex.png");
+      tex = Game::assets->GetTexture("collision");
 
       srcR = {0, 0, 32, 32};
       destR = {collider.x, collider.y, collider.w, collider.h};
@@ -47,7 +43,7 @@ class ColliderComponent : public Component {
         collider.h = transform->height * transform->scale;
       }
 
-      // to folow camera
+      // to follow camera
       destR.x = collider.x - Game::camera.x;
       destR.y = collider.y - Game::camera.y;
     }
