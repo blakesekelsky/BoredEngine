@@ -1,5 +1,5 @@
 binary:
-	g++ src/Game.h src/Game.cpp src/TextureManager.h src/TextureManager.cpp src/Map.h src/Map.cpp src/Vector2D.h src/Vector2D.cpp src/Collision.h src/Collision.cpp src/ECS/ECS.h src/ECS/ECS.cpp src/main.cpp -w -lSDL2 -lSDL2_image -o bin/main
+	clang++ -stdlib=libc++ src/ECS/ECS.cpp src/Vector2D.cpp src/Collision.cpp src/Map.cpp src/Game.cpp src/AssetManager.cpp src/TextureManager.cpp src/main.cpp -w -lSDL2 -lSDL2_image -o bin/main
 
 build_run: binary
 	./bin/main
