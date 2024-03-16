@@ -33,7 +33,8 @@ class Game {
     enum groupLabels : std::size_t{
       groupMap,
       groupPlayers,
-      groupColliders
+      groupColliders,
+      groupProjectiles
     };
   private:
     SDL_Window *window;

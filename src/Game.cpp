@@ -51,6 +51,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   assets->AddTexture("terrain", "assets/terrain_ss.png");
   assets->AddTexture("player", "assets/player_anim.png");
   assets->AddTexture("collision", "assets/col_box.png");
+  assets->AddTexture("projectile", "assets/projectile.png");
 
   map = new Map("terrain", 2, 32);
   map->LoadMapTiles("assets/tiles.map", 25, 20);
@@ -62,6 +63,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
   player.addComponent<KeyboardController>();
   player.addComponent<ColliderComponent>("player", player.getComponent<TransformComponent>().position.x, player.getComponent<TransformComponent>().position.y, 64);
   player.addGroup(groupPlayers);
+
+  assets->CreateProjectile(Vector2D(600, 600), Vector2D(-1, -1), 200, 0, "projectile");
+  assets->CreateProjectile(Vector2D(600, 500), Vector2D(-1, 0), 200, -1, "projectile");
+  assets->CreateProjectile(Vector2D(600, 400), Vector2D(-1, 1), 200, 0, "projectile");
+  assets->CreateProjectile(Vector2D(600, 300), Vector2D(-1, 2), 200, -1, "projectile");
 }
 
 void Game::handleEvents() {
@@ -79,6 +85,7 @@ void Game::handleEvents() {
 auto &tiles(manager.getGroup(Game::groupMap));
 auto &players(manager.getGroup(Game::groupPlayers));
 auto &colliders(manager.getGroup(Game::groupColliders));
+auto &projectiles(manager.getGroup(Game::groupProjectiles));
 
 void Game::update() {
   SDL_Rect playerCol = player.getComponent<ColliderComponent>().collider;
@@ -91,6 +98,12 @@ void Game::update() {
     SDL_Rect cCol = c->getComponent<ColliderComponent>().collider;
     if (Collision::AABB(playerCol, cCol)) {
       player.getComponent<TransformComponent>().position = playerPos;
+    }
+  }
+
+  for (auto &p : projectiles) {
+    if (Collision::AABB(playerCol, p->getComponent<ColliderComponent>().collider)) {
+      p->destroy();
     }
   }
 
@@ -125,6 +138,11 @@ void Game::render() {
 
   for (auto &p : players) {
     p->Draw();
+  }
+
+  for (auto &pj : projectiles) {
+    pj->Draw();
+  
   }
 
   SDL_RenderPresent(renderer);

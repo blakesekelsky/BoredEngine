@@ -16,6 +16,10 @@ class ColliderComponent : public Component {
 
     TransformComponent *transform;
 
+    ColliderComponent(std::string t){
+      tag = t;
+    }
+
     ColliderComponent(std::string t, int xpos, int ypos, int size) {
       tag = t;
       collider.x = xpos;
