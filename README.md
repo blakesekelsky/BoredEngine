@@ -2,8 +2,8 @@
 **A 2D game engine using SDL2.**
 
 ## Dependencies
-* **g++**
-  - Ubuntu: ```sudo apt install g++``` (you probably have this already)
+* **clang**
+  - Ubuntu: ```sudo apt install clang``` (you probably have this already)
 * **SDL2, SDL2_Image**
   - Ubuntu: ``` sudo apt install libsdl2-dev libsdl2-image-dev ```
 
