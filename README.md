@@ -3,7 +3,7 @@
 
 ## Dependencies
 * **clang**
-  - Ubuntu: ```sudo apt install clang``` (you probably have this already)
+  - Ubuntu: ```sudo apt install clang```
 * **SDL2, SDL2_Image**
   - Ubuntu: ``` sudo apt install libsdl2-dev libsdl2-image-dev ```
 
